@@ -1,6 +1,7 @@
 import numpy as np
 import torch
 import pandas as pd
+import os
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
 from Bio.Align import substitution_matrices
@@ -175,7 +176,7 @@ def get_dataloader_eval(path, BA):
     scaled_blosum62 = scaler.transform(blosum62)
     scaled_blosum62 = np.vstack([scaled_blosum62, np.array([0]*20)])
     scaled_blosum62 = np.hstack([scaled_blosum62, np.array([0]*20 + [1]).reshape(-1, 1)])
-    pseudoDT = pd.read_csv("./misc/updated_pseudosequences.csv")
+    pseudoDT = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "misc", "updated_pseudosequences.csv"))
 
     peptide_allele_list = DT['key'].tolist()
     if BA: BA_list = DT['BA'].tolist()

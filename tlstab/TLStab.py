@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import pandas as pd
 import numpy as np
 import math
@@ -5,11 +7,13 @@ import math
 import torch
 
 # Local imports
-from dataloader import get_dataloader_eval
-from model import Pretrained_BAEL
+from tlstab.dataloader import get_dataloader_eval
+from tlstab.model import Pretrained_BAEL
+import tlstab
 
 import argparse
 import sys
+import os
 
 # Basic routine for forwarding
 def forwarding(model, loader, fold):
@@ -46,7 +50,7 @@ def main(args):
 	prediction_list = []
 	for fold in range(1, 11):
 		model = Pretrained_BAEL(num_features = num_features, latent_dim=512) # Latent dimension is 512 for the best model
-		model.load_state_dict(torch.load('./models/weights/TLStab_' + str(fold) + '.pt', map_location=torch.device('cpu')))
+		model.load_state_dict(torch.load(os.path.join(os.path.dirname(os.path.abspath(tlstab.__file__)), 'models', 'weights', 'TLStab_' + str(fold) + '.pt'), map_location=torch.device('cpu')))
 
 		prediction_list.append(forwarding(model, loader, fold))
 

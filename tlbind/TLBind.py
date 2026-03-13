@@ -1,14 +1,18 @@
+#!/usr/bin/env python
+
 import pandas as pd
 import numpy as np
 
 import torch
 
 # Local imports
-from dataloader import get_dataloader_eval
-from model import Pretrained_BAEL
+from tlbind.dataloader import get_dataloader_eval
+from tlbind.model import Pretrained_BAEL
+import tlbind
 
 import argparse
 import sys
+import os
 
 # Basic routine for forwarding
 def forwarding(model, loader):
@@ -36,7 +40,7 @@ def main(args):
 
 	# Load model
 	model = Pretrained_BAEL(num_features = num_features, latent_dim=512) # Latent dimension is 512 for the best model
-	model.load_state_dict(torch.load('./models/Pretrained_BA-EL.pt', map_location=torch.device('cpu')))
+	model.load_state_dict(torch.load(os.path.join(os.path.dirname(os.path.abspath(tlbind.__file__)), 'models', 'Pretrained_BA-EL.pt'), map_location=torch.device('cpu')))
 	
 	print("Generating predictions...")
 	predictions = forwarding(model, loader)
